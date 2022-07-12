@@ -25,13 +25,13 @@ func MeanEndpoint(Context *gin.Context) {
 	requestsInt, err := strconv.Atoi(requests)
 	if err != nil {
 		log.Print("error: couldn't convert request value to int")
-		Context.IndentedJSON(http.StatusBadRequest, gin.H{"message": "couldn't convert request value to int"})
+		Context.JSON(http.StatusBadRequest, gin.H{"message": "couldn't convert request value to int"})
 		return
 	}
 	lengthInt, err := strconv.Atoi(length)
 	if err != nil {
 		log.Print("error: couldn't convert lenght value to int")
-		Context.IndentedJSON(http.StatusBadRequest, gin.H{"message": "couldn't convert lenght value to int"})
+		Context.JSON(http.StatusBadRequest, gin.H{"message": "couldn't convert lenght value to int"})
 		return
 	}
 
@@ -54,20 +54,20 @@ func MeanEndpoint(Context *gin.Context) {
 		readRequest := strings.NewReader(res)
 		go makeRequest(readRequest, ch)
 	}
-	dataSheet := make([][]int, lengthInt)
+	dataSheet := make([][]int, requestsInt)
 	for i := 0; i < requestsInt; i++ {
 		rsp := <-ch
 		defer rsp.Body.Close()
 		bodyBytes, err := io.ReadAll(rsp.Body)
 		if err != nil {
 			log.Printf("error: parser cannot convert bytes from https response, %v", err)
-			Context.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "parser cannot convert bytes https from response"})
+			Context.JSON(http.StatusInternalServerError, gin.H{"message": "parser cannot convert bytes https from response"})
 			return
 		}
 		data, err := parseJSON(bodyBytes)
 		if err != nil {
 			log.Printf("error: parser cannot convert bytes from response, %v", err)
-			Context.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "parser cannot convert bytes from response"})
+			Context.JSON(http.StatusInternalServerError, gin.H{"message": "parser cannot convert bytes from response"})
 			return
 		}
 

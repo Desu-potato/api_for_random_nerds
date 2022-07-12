@@ -10,5 +10,5 @@ func main() {
 	helpers.Initial_data()
 	api := gin.Default()
 	api.GET("/random/mean", helpers.MeanEndpoint)
-	api.Run("localhost:8080")
+	api.Run("0.0.0.0:8080")
 }
