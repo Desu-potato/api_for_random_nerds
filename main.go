@@ -1,12 +1,14 @@
 package main
 
 import (
+	"main/helpers"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	initial_data()
+	helpers.Initial_data()
 	api := gin.Default()
-	api.GET("/random/mean", meanEndpoint)
-	api.Run("localhost:8080")
+	api.GET("/random/mean", helpers.MeanEndpoint)
+	api.Run("0.0.0.0:8080")
 }
